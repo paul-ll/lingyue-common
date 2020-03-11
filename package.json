@@ -1,0 +1,104 @@
+{
+    "name": "lvl-common",
+    "version": "1.5.7",
+    "description": "通用逻辑功能模块。包含AjaxService、clone、dataFormat、queryString、clipboard",
+    "main": "dist/index.js",
+    "private": false,
+    "scripts": {
+        "prebuild": "rm -rf ./dist",
+        "devbuild": "npm run prebuild && webpack --mode development",
+        "//": "在执行npm run build时，npm的生命周期函数会先执行prebuild，这样就实现了自动删除dist文件夹的目的",
+        "build": "webpack --mode production",
+        "pack": "npm run build && npm pack"
+    },
+    "keywords": [
+        "AjaxService",
+        "clone",
+        "dataFormat",
+        "queryString",
+        "clipboard"
+    ],
+    "homepage": "https://github.com/paul-ll/lingyue-common",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:paul-ll/lingyue-common.git"
+    },
+    "bugs": {
+        "url": "https://github.com/paul-ll/lingyue-common/issues",
+        "email": "lvl8961@163.com.com"
+    },
+    "author": "lvl8961@163.com.com",
+    "license": "MIT",
+    "devDependencies": {
+        "@babel/cli": "^7.1.2",
+        "@babel/core": "^7.1.2",
+        "@babel/preset-env": "^7.1.0",
+        "babel-eslint": "^10.0.1",
+        "babel-loader": "^8.0.4",
+        "babel-preset-minify": "^0.5.0",
+        "eslint": "^5.7.0",
+        "eslint-config-prettier": "^3.1.0",
+        "eslint-loader": "^2.1.1",
+        "eslint-plugin-prettier": "^3.0.0",
+        "prettier": "^1.14.3",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.2"
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "lvl-common-base": "^1.0.1"
+    },
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "browser": true,
+            "es6": true
+        },
+        "globals": {
+            "__HOST__": false
+        },
+        "plugins": [
+            "prettier"
+        ],
+        "extends": [
+            "plugin:prettier/recommended"
+        ],
+        "rules": {
+            "no-console": "off",
+            "no-debugger": "off",
+            "prettier/prettier": [
+                "error",
+                {
+                    "singleQuote": true,
+                    "tabWidth": 4,
+                    "printWidth": 120
+                }
+            ],
+            "require-jsdoc": [
+                "error",
+                {
+                    "require": {
+                        "FunctionDeclaration": true,
+                        "MethodDefinition": true,
+                        "ClassDeclaration": true,
+                        "ArrowFunctionExpression": false
+                    }
+                }
+            ],
+            "valid-jsdoc": [
+                "error",
+                {
+                    "requireReturn": false
+                }
+            ]
+        },
+        "parserOptions": {
+            "parser": "babel-eslint",
+            "sourceType": "module"
+        }
+    },
+    "eslintIgnore": [
+        "/node_modules/*",
+        "/dist/*"
+    ]
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+
+        <script src="../dist/index.js"></script>
+    </head>
+
+    <body>
+        <script>
+            var a = { a: 1, b: function() { console.log(this.a) } };
+            // 如果使用script:src方式引用，webpack打包的时候，会自动将导出对象保存到window上
+            clone(a).b();
+        </script>
+    </body>
+
+</html>
