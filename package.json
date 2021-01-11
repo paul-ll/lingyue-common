@@ -1,6 +1,6 @@
 {
-    "name": "lvl-common",
-    "version": "1.5.7",
+    "name": "@lvlei/lvl-common",
+    "version": "1.6.0",
     "description": "通用逻辑功能模块。包含AjaxService、clone、dataFormat、queryString、clipboard",
     "main": "dist/index.js",
     "private": false,
@@ -49,7 +49,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
-        "lvl-common-base": "^1.0.1"
+        "@lvlei/lvl-common-base": "^1.0.1"
     },
     "babel": {
         "presets": [

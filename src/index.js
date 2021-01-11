@@ -1,4 +1,4 @@
-import { clone, dataFormat } from '@zibu/common-base';
+import { clone, dataFormat } from '@lvlei/lvl-common-base';
 import AjaxService from './AjaxService';
 import clipboard from './clipboard';
 import queryString from './queryString';
