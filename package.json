@@ -9,7 +9,8 @@
         "devbuild": "npm run prebuild && webpack --mode development",
         "//": "在执行npm run build时，npm的生命周期函数会先执行prebuild，这样就实现了自动删除dist文件夹的目的",
         "build": "webpack --mode production",
-        "pack": "npm run build && npm pack"
+        "pack": "npm run build && npm pack",
+        "lint": "eslint --fix ./src"
     },
     "keywords": [
         "AjaxService",
@@ -68,7 +69,8 @@
             "__HOST__": false
         },
         "plugins": [
-            "prettier"
+            "prettier",
+            "html"
         ],
         "extends": [
             "plugin:prettier/recommended"
@@ -102,8 +104,8 @@
                 }
             ]
         },
+        "parser": "babel-eslint",
         "parserOptions": {
-            "parser": "babel-eslint",
             "sourceType": "module"
         }
     },
