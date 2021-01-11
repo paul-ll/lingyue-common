@@ -1,3 +1,4 @@
+import * as Enum from './Enum';
 import HttpRequest from './HttpRequest';
 
 const _host = typeof __HOST__ === 'string' ? __HOST__ : '';
@@ -8,7 +9,7 @@ class AjaxService {
     /**
      * AjaxService类构造函数
      * @param {String} url RESTful格式的请求地址（默认值：__HOST__ + '{/api}{/module}{/action}{/id}'）
-     * @param {String} contentType 发送形式，默认form表单（json、form）
+     * @param {String} contentType 发送形式，默认form表单（json、form、formData）
      * @param {String} host 请求服务器域名
      */
     constructor(url, contentType = 'form', host = _host) {
@@ -20,6 +21,8 @@ class AjaxService {
         this.init(contentType);
     }
 
+    static ContentType = Enum.ContentType;
+
     /**
      * 初始化AjaxService
      * @param {String} contentType 请求Header中的Content-Type
@@ -29,10 +32,7 @@ class AjaxService {
         this.cancel = this.requestInstance.cancelFun;
 
         // 设置Content-Type
-        this.setHeader(
-            'Content-Type',
-            contentType === 'json' ? 'application/json' : 'application/x-www-form-urlencoded'
-        );
+        this.setHeader('Content-Type', this.requestInstance.contentType);
 
         // 注入response钩子函数
         this.injectResponseHook(
@@ -72,11 +72,11 @@ class AjaxService {
         );
 
         // 分解原始RESTful格式地址
-        let reg = /\{\/([^}]+)\}/g;
+        const reg = /\{\/([^}]+)\}/g;
         // 因为str.match方法返回的结果只有匹配的内容，没有每一个匹配中正则表达式小括号内的内容
         // 所以使用reg.exec方法。
         while (reg.lastIndex < this.originalUrl.length) {
-            let section = reg.exec(this.originalUrl);
+            const section = reg.exec(this.originalUrl);
             if (!section) {
                 break;
             }
@@ -87,15 +87,15 @@ class AjaxService {
     }
 
     /**
-     * 设置指定请求类型附加的header，如果未指定类型，则默认全部请求都附加指定header
+     * 设置当前实例化对象指定请求类型附加的header，如果未指定类型，则默认全部请求都附加指定header
      * @param {String} key header的key
      * @param {String} value header的value
-     * @param {String} requestType 请求类型
+     * @param {String} requestType 请求类型('post', 'delete', 'put', 'patch', 'get')
      */
     setHeader(key, value, requestType) {
         if (key && value) {
             requestType = requestType || 'common';
-            let header = this.requestInstance.defaults.headers[requestType];
+            const header = this.requestInstance.defaults.headers[requestType];
             header[key] = value;
         }
     }
@@ -121,7 +121,7 @@ class AjaxService {
         this.requestInstance.interceptors.response.use(
             response => {
                 if (typeof resolveHook === 'function') {
-                    let returnValue = resolveHook(response);
+                    const returnValue = resolveHook(response);
                     // 如果未返回值，则表示Ajax的钩子函数不需要返回内容
                     if (typeof returnValue !== 'undefined') {
                         return returnValue;
@@ -132,7 +132,7 @@ class AjaxService {
             },
             error => {
                 if (typeof rejectHook === 'function') {
-                    let returnValue = rejectHook(error);
+                    const returnValue = rejectHook(error);
                     // 如果未返回值，则表示Ajax的钩子函数不需要返回内容
                     if (typeof returnValue !== 'undefined') {
                         if (returnValue instanceof Promise) {
@@ -157,9 +157,10 @@ class AjaxService {
                  * 发送HTTP请求
                  * @param {Object} urlObj 请求地址对象
                  * @param {Object} param 请求参数
+                 * @param {Object} config [请求配置项](https://github.com/axios/axios#instance-methods)
                  * @returns {Promise} 返回Promise对象
                  */
-                this[key] = (urlObj, param) => this.requestInstance[key](this.urlMatch(urlObj), param);
+                this[key] = (urlObj, param, config) => this.requestInstance[key](this.urlMatch(urlObj), param, config);
             }
         });
     }
@@ -172,18 +173,23 @@ class AjaxService {
     urlMatch(urlObj) {
         let url = this.originalUrl;
         // 如果请求的方法里提供了host，则替换掉实例化时传递的服务器地址
-        if (urlObj.hasOwnProperty('host')) {
-            url = url.replace(/http[s]?:\/\/[^{]+/, urlObj.host);
+        if (Object.prototype.hasOwnProperty.call(urlObj, 'host')) {
+            const httpReg = /http[s]?:\/\/[^{]+/;
+            if (httpReg.test(url)) {
+                url = url.replace(httpReg, urlObj.host);
+            } else {
+                url = urlObj.host + url;
+            }
         }
         this.sections.forEach(section => {
-            let key = section[1];
-            let value = urlObj.hasOwnProperty(key) ? urlObj[key] : this[key];
+            const key = section[1];
+            let value = Object.prototype.hasOwnProperty.call(urlObj, key) ? urlObj[key] : this[key];
             if (value) {
                 value = '/' + value;
             } else {
                 value = '';
             }
-            let reg = new RegExp(section[0]);
+            const reg = new RegExp(section[0]);
             url = url.replace(reg, value);
         });
         return url;

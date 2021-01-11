@@ -29,7 +29,7 @@ export default class WXHttpRequest {
      */
     initInterceptors() {
         // 不能使用箭头函数，因为this会被绑定为HttpRequest对象
-        let use = function(success, fail) {
+        const use = function(success, fail) {
             this._hooks.push({
                 success,
                 fail
@@ -63,7 +63,7 @@ export default class WXHttpRequest {
                     config = hook.success(config);
                 });
 
-                let promise = new Promise((resolve, reject) => {
+                const promise = new Promise((resolve, reject) => {
                     config.success = response => {
                         this.interceptors.response._hooks.forEach(hook => {
                             response = hook.success(response);

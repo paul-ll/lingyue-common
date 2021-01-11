@@ -16,7 +16,7 @@ class QueryString {
         this.search = this.getLocationSearch();
         var _queryObj = this.parse();
         this.getQuery = () => {
-            let search = this.getLocationSearch();
+            const search = this.getLocationSearch();
             if (this.search !== search) {
                 this.search = search;
                 _queryObj = this.parse();
@@ -46,10 +46,10 @@ class QueryString {
         if (typeof param !== 'string') {
             param = this.getLocationSearch().slice(1);
         }
-        let params = param.split('&');
-        let paramObj = {};
+        const params = param.split('&');
+        const paramObj = {};
         params.forEach(param => {
-            let oneGroupParams = param.split('=');
+            const oneGroupParams = param.split('=');
             paramObj[oneGroupParams[0]] = oneGroupParams[1];
         });
         return paramObj;
@@ -61,7 +61,7 @@ class QueryString {
      * @returns {String} 返回序列化后的字符串
      */
     stringify(param) {
-        let params = [];
+        const params = [];
         Object.keys(param).forEach(key => {
             params.push(`${key}=${param[key]}`);
         });

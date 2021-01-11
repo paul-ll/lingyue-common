@@ -32,6 +32,7 @@
     "devDependencies": {
         "@babel/cli": "^7.1.2",
         "@babel/core": "^7.1.2",
+        "@babel/plugin-proposal-class-properties": "^7.10.4",
         "@babel/preset-env": "^7.1.0",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.4",
@@ -39,6 +40,7 @@
         "eslint": "^5.7.0",
         "eslint-config-prettier": "^3.1.0",
         "eslint-loader": "^2.1.1",
+        "eslint-plugin-html": "^6.0.3",
         "eslint-plugin-prettier": "^3.0.0",
         "prettier": "^1.14.3",
         "webpack": "^4.20.2",
@@ -47,6 +49,14 @@
     "dependencies": {
         "axios": "^0.18.0",
         "lvl-common-base": "^1.0.1"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ],
+        "plugins": [
+            "@babel/plugin-proposal-class-properties"
+        ]
     },
     "eslintConfig": {
         "root": true,
@@ -96,6 +106,12 @@
             "parser": "babel-eslint",
             "sourceType": "module"
         }
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "semi": true
     },
     "eslintIgnore": [
         "/node_modules/*",
